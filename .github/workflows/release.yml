@@ -14,17 +14,23 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install GTK
-        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libgtk4-layer-shell-dev
+      - name: Install GTK and gtk4-layer-shell
+        run: ./ci/install-deps.sh
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test
+      # The binary looks for libraries in ../lib/pixelscale first, so the release can carry
+      # its own gtk4-layer-shell for distros that do not package it.
       - run: cargo build --release
+        env:
+          RUSTFLAGS: -C link-arg=-Wl,-rpath,$ORIGIN/../lib/pixelscale
       - name: Package
         run: |
           name="pixelscale-${GITHUB_REF_NAME}-x86_64-linux"
-          mkdir "$name"
+          mkdir -p "$name/lib"
           cp target/release/pixelscale install.sh README.md LICENSE "$name/"
           cp -r data assets "$name/"
+          so=$(ldd target/release/pixelscale | awk '/gtk4-layer-shell/ { print $3 }')
+          cp -L "$so" "$name/lib/"
           tar -czf "$name.tar.gz" "$name"
           sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
       - name: Publish

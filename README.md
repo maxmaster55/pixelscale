@@ -21,7 +21,8 @@ running but not the `tailscale` command.
 
 - Linux with Tailscale installed and running.
 - GTK 4.12 or newer.
-- [gtk4-layer-shell](https://github.com/wmww/gtk4-layer-shell) 1.0 or newer.
+- [gtk4-layer-shell](https://github.com/wmww/gtk4-layer-shell) 1.0 or newer (bundled in the
+  release tarball; needed from your distro only when building from source).
 
 | Desktop | How it opens |
 | --- | --- |
@@ -40,16 +41,9 @@ Without this it can still show status, devices and ping them.
 
 ### Release tarball
 
-Needs a distro at least as new as Ubuntu 24.04 (Debian 13, Fedora 40, Arch).
-
-```sh
-# Debian / Ubuntu
-sudo apt install libgtk-4-1 libgtk4-layer-shell0
-# Fedora
-sudo dnf install gtk4 gtk4-layer-shell
-# Arch
-sudo pacman -S gtk4 gtk4-layer-shell
-```
+Needs a distro at least as new as Ubuntu 24.04 (Debian 13, Fedora 40, Arch) with GTK 4
+installed, which desktop systems normally have. The tarball brings its own copy of
+gtk4-layer-shell.
 
 Download the latest `pixelscale-*-x86_64-linux.tar.gz` from the
 [releases page](https://github.com/maxmaster55/pixelscale/releases), then:
@@ -60,7 +54,7 @@ cd pixelscale-*-x86_64-linux
 ./install.sh
 ```
 
-This installs into `~/.local` (binary, launcher entry, the four fonts) and makes Pixelscale
+This installs into `~/.local` (binary, its bundled library, launcher entry, the four fonts) and makes Pixelscale
 start with your session. `./install.sh uninstall` removes it.
 
 ### From source

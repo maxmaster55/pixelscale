@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install GTK
-        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libgtk4-layer-shell-dev
+      - name: Install GTK and gtk4-layer-shell
+        run: ./ci/install-deps.sh
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
