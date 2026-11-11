@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Pixelscale
+GenericName=Tailscale Panel
+Comment=See and control Tailscale: devices, exit nodes, Taildrop
+Exec=pixelscale show
+Icon=io.github.maxmaster55.Pixelscale
+Terminal=false
+Categories=Network;
+Keywords=tailscale;vpn;network;tailnet;
+StartupNotify=false

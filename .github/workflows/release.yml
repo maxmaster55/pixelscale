@@ -1,0 +1,33 @@
+# Push a tag such as v0.1.0 to build a tarball and attach it to a GitHub release.
+name: Release
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  tarball:
+    # Built on Ubuntu 24.04 so the binary runs on any distro at least that new
+    # (glibc 2.39, GTK 4.14): Ubuntu 24.04+, Debian 13+, Fedora 40+, Arch.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK
+        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libgtk4-layer-shell-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test
+      - run: cargo build --release
+      - name: Package
+        run: |
+          name="pixelscale-${GITHUB_REF_NAME}-x86_64-linux"
+          mkdir "$name"
+          cp target/release/pixelscale install.sh README.md LICENSE "$name/"
+          cp -r data assets "$name/"
+          tar -czf "$name.tar.gz" "$name"
+          sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" pixelscale-*.tar.gz pixelscale-*.sha256 --generate-notes

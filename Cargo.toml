@@ -1,0 +1,19 @@
+[package]
+name = "pixelscale"
+version = "0.1.0"
+edition = "2021"
+description = "A Tailscale panel in the Glowgrid pixel style"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/maxmaster55/pixelscale"
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.11", features = ["v4_12"] }
+gtk4-layer-shell = "0.8"
+ksni = { version = "0.3", default-features = false, features = ["blocking", "async-io"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.9"
+
+[profile.release]
+lto = "thin"
+strip = true
