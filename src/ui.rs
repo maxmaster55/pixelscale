@@ -467,6 +467,16 @@ impl Ui {
             glib::ControlFlow::Continue
         });
 
+        // Development aid: PIXELSCALE_OPEN_PICKER=1 opens the file picker for the first
+        // online device two seconds after start, to test it without clicking.
+        if std::env::var_os("PIXELSCALE_OPEN_PICKER").is_some() {
+            let u = ui.clone();
+            glib::timeout_add_seconds_local_once(2, move || match u.selected_target() {
+                Some((id, name)) => u.choose_and_send(id, name),
+                None => eprintln!("pixelscale: no device can receive files"),
+            });
+        }
+
         ui.rebuild();
         ui
     }
@@ -1096,11 +1106,9 @@ impl Ui {
             .await;
             match res {
                 Ok(Ok(url)) => {
-                    gtk::UriLauncher::new(&url).launch(
-                        Some(&u.window),
-                        gio::Cancellable::NONE,
-                        |_| {},
-                    );
+                    // same hazard as the file dialog: no layer-shell parent
+                    let parent = if u.panel_mode { None } else { Some(&u.window) };
+                    gtk::UriLauncher::new(&url).launch(parent, gio::Cancellable::NONE, |_| {});
                     u.say("Finish logging in in your browser", true);
                 }
                 Ok(Err(e)) => u.say(&e.to_string(), false),
@@ -1170,11 +1178,19 @@ impl Ui {
     fn choose_and_send(self: &Rc<Self>, id: String, name: String) {
         let dialog = gtk::FileDialog::builder()
             .title(format!("Send to {name}"))
-            .modal(true)
+            .modal(!self.panel_mode)
             .build();
         self.busy.set(self.busy.get() + 1);
         let u = self.clone();
-        dialog.open_multiple(Some(&self.window), gio::Cancellable::NONE, move |res| {
+        // A layer-shell panel is not a normal toplevel: giving it to the file dialog as its
+        // parent is a Wayland protocol error, and the compositor drops the whole app. The
+        // dialog therefore stands alone in panel mode.
+        let parent = if self.panel_mode {
+            None
+        } else {
+            Some(&self.window)
+        };
+        dialog.open_multiple(parent, gio::Cancellable::NONE, move |res| {
             u.busy.set(u.busy.get().saturating_sub(1));
             if let Ok(list) = res {
                 let paths: Vec<PathBuf> = (0..list.n_items())

@@ -158,8 +158,8 @@ button.icon, button.text { transition: background-color 80ms steps(2), color 80m
 
 /* lights breathe: two held levels, like a pixel-art glow */
 @keyframes breathe { from { opacity: 1; } to { opacity: 0.55; } }
-.dot.on, .dot.exit { animation: breathe 1.4s steps(2, jump-none) infinite alternate; }
-.state.warn { animation: breathe 0.8s steps(2, jump-none) infinite alternate; }
+.dot.on, .dot.exit { animation: breathe 1.4s steps(2) infinite alternate; }
+.state.warn { animation: breathe 0.8s steps(2) infinite alternate; }
 
 /* rows rise into place when the panel opens, one after another */
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
