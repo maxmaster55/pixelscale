@@ -16,7 +16,7 @@ of the screen. It shows your tailnet and lets you change it without a terminal.
 - **Exit node**: pick one of your devices or none, and toggle local-network access.
 - **Taildrop**: drop files onto a device or the drop area to send them; save or discard received files.
 - **Settings**: switch between accounts, and toggle accept-routes, Tailscale DNS and shields-up.
-- **Three themes**: Ember, Forge and Frost.
+- **Four themes**: Ember, Forge, Frost and Geode.
 
 It talks to the Tailscale daemon directly over its local socket, so it needs `tailscaled`
 running but not the `tailscale` command.
@@ -127,7 +127,7 @@ menu has open, on/off and quit. On GNOME the tray needs the AppIndicator extensi
 `~/.config/pixelscale/config.toml`. Every key is optional; these are the defaults.
 
 ```toml
-theme = "ember"        # "ember", "forge" or "frost"
+theme = "ember"        # "ember", "forge", "frost" or "geode"
 tray = true            # show the tray icon
 mode = "auto"          # "auto", "panel" or "window"
 

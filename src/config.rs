@@ -6,7 +6,7 @@ use std::path::PathBuf;
 #[derive(Debug, Clone, Deserialize)]
 #[serde(default)]
 pub struct Config {
-    /// "ember", "forge" or "frost". When a Glowgrid desktop is present
+    /// "ember", "forge", "frost" or "geode". When a Glowgrid desktop is present
     /// (~/.local/state/glowgrid/theme exists) that file wins and is followed live.
     pub theme: String,
     /// Show an icon in the system tray.

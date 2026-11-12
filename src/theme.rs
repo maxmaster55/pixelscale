@@ -10,7 +10,7 @@ pub struct Palette {
     pub glow_3: &'static str,
 }
 
-pub const NAMES: [&str; 3] = ["ember", "forge", "frost"];
+pub const NAMES: [&str; 4] = ["ember", "forge", "frost", "geode"];
 
 pub fn palette(name: &str) -> Palette {
     match name {
@@ -26,6 +26,13 @@ pub fn palette(name: &str) -> Palette {
             accent_hot: "#bdf0ff",
             glow_1: "#8fe3f7",
             glow_2: "#e6fbff",
+            glow_3: "#ffd36b",
+        },
+        "geode" => Palette {
+            accent: "#9b7bff",
+            accent_hot: "#d9ccff",
+            glow_1: "#b9a6ff",
+            glow_2: "#efe9ff",
             glow_3: "#ffd36b",
         },
         _ => Palette {
