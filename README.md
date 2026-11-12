@@ -3,6 +3,10 @@
 A Tailscale panel in the [Glowgrid](https://github.com/maxmaster55/pixal_design_system) pixel style:
 dark, square, hard-edged, lit only by its palette.
 
+![Pixelscale's four tabs: devices with quick actions, exit node choice, Taildrop, and account and device settings](docs/tabs.png)
+
+<sub>Shown with example devices.</sub>
+
 Click the tray icon (or bind a key to `pixelscale toggle`) and a panel drops from the corner
 of the screen. It shows your tailnet and lets you change it without a terminal.
 
